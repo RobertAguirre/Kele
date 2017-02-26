@@ -27,14 +27,12 @@ class Kele
             response = self.class.get(base_api_endpoint("message_threads"), headers: { "authorization" => @auth_token })
             @messages = (1..(response["count"]/10 + 1)).map do |i|
                 self.class.get(base_api_endpoint("message_threads?page=#{i}"), headers: { "authorization" => @auth_token })
-
             end
                puts @messages
 
         else
             response = self.class.get(base_api_endpoint("message_threads?page=#{page.join.to_i}"), headers: { "authorization" => @auth_token })
             @messages = JSON.parse(response.body)
-
         end
     end
 
@@ -43,7 +41,10 @@ class Kele
         self.class.post(base_api_endpoint("messages"), message_data)
     end
 
-
+    def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment, enrollment_id)
+        submisson_data = {body: {checkpoint_id: checkpoint_id, assignment_branch: assignment_branch, assignment_commit_link: assignment_commit_link, comment: comment, enrollment_id: enrollment_id}, headers: { "authorization" => @auth_token }}
+        self.class.post(base_api_endpoint("checkpoint_submissions"), submisson_data)
+    end
     private
 
     def base_api_endpoint(end_point)
