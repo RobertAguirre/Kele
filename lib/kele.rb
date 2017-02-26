@@ -12,7 +12,7 @@ class Kele
 
     def get_me
         response = self.class.get(base_api_endpoint("users/me"), headers: { "authorization" => @auth_token })
-        body = JSON.parse(response.body)
+        @user_data = JSON.parse(response.body)
     end
 
     private
